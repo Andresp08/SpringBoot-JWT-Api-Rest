@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFounException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -12,8 +12,8 @@ public class ResourceNotFounException extends RuntimeException {
 	private String nombreCampo;
 	private long valorCampo;
 
-	public ResourceNotFounException(String nombreRecurso, String nombreCampo, long valorCampo) {
-		super(String.format("%s No encontrado con: %:s : '%:s'", nombreRecurso, nombreCampo, valorCampo));
+	public ResourceNotFoundException(String nombreRecurso, String nombreCampo, long valorCampo) {
+		super(String.format("%s no disponible con: %s : '%s'", nombreRecurso, nombreCampo, valorCampo));
 		this.nombreRecurso = nombreRecurso;
 		this.nombreCampo = nombreCampo;
 		this.valorCampo = valorCampo;
