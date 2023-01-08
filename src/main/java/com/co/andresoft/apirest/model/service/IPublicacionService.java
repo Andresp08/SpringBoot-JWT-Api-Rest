@@ -1,14 +1,15 @@
 package com.co.andresoft.apirest.model.service;
 
-import java.util.List;
-
 import com.co.andresoft.apirest.dto.PublicacionDTO;
+import com.co.andresoft.apirest.dto.PublicacionRespuesta;
 
 public interface IPublicacionService {
 
 	public PublicacionDTO crearPublicacion(PublicacionDTO publicacionDTO);
 	
-	public List<PublicacionDTO> obtenerPublicaciones();
+	//public List<PublicacionDTO> obtenerPublicaciones(int numeroPagina, int cantidadRegistros);
+	public PublicacionRespuesta obtenerPublicaciones(int numeroPagina, int cantidadRegistros,
+			String ordenarPor, String sortDir);
 	
 	public PublicacionDTO obtenerPublicacionById(Long id);
 	
