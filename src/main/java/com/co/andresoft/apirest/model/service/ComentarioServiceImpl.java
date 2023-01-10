@@ -3,6 +3,7 @@ package com.co.andresoft.apirest.model.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ import com.co.andresoft.apirest.model.entity.Publicacion;
 
 @Service
 public class ComentarioServiceImpl implements IComentarioService {
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Autowired
 	private IComentarioDao comentarioDao;
@@ -112,25 +116,13 @@ public class ComentarioServiceImpl implements IComentarioService {
 
 	// Convierte Entidad a DTO
 	private ComentarioDTO mapearDTO(Comentario comentario) {
-		ComentarioDTO comentarioDTO = new ComentarioDTO();
-
-		comentarioDTO.setId(comentario.getId());
-		comentarioDTO.setNombre(comentario.getNombre());
-		comentarioDTO.setEmail(comentario.getEmail());
-		comentarioDTO.setCuerpo(comentario.getCuerpo());
-
+		ComentarioDTO comentarioDTO = modelMapper.map(comentario, ComentarioDTO.class);
 		return comentarioDTO;
 	}
 
 	// Convertir DTO a Entidad
 	private Comentario mapearEntidad(ComentarioDTO comentarioDTO) {
-		Comentario comentario = new Comentario();
-
-		comentario.setId(comentarioDTO.getId());
-		comentario.setNombre(comentarioDTO.getNombre());
-		comentario.setEmail(comentarioDTO.getEmail());
-		comentario.setCuerpo(comentarioDTO.getCuerpo());
-
+		Comentario comentario = modelMapper.map(comentarioDTO, Comentario.class);
 		return comentario;
 	}
 

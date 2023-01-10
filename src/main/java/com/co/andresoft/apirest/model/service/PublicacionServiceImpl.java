@@ -3,6 +3,7 @@ package com.co.andresoft.apirest.model.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,9 @@ import com.co.andresoft.apirest.model.entity.Publicacion;
 
 @Service
 public class PublicacionServiceImpl implements IPublicacionService {
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Autowired
 	private IPublicacionDao publicacionDao;
@@ -100,24 +104,13 @@ public class PublicacionServiceImpl implements IPublicacionService {
 
 	// Convierte Entidad a DTO
 	private PublicacionDTO mapearDTO(Publicacion publicacion) {
-		PublicacionDTO publicacionDTO = new PublicacionDTO();
-
-		publicacionDTO.setId(publicacion.getId());
-		publicacionDTO.setTitulo(publicacion.getTitulo());
-		publicacionDTO.setDescripcion(publicacion.getDescripcion());
-		publicacionDTO.setContenido(publicacion.getContenido());
-
+		PublicacionDTO publicacionDTO = modelMapper.map(publicacion, PublicacionDTO.class);
 		return publicacionDTO;
 	}
 
 	// Convertir DTO a Entidad
 	private Publicacion mapearEntidad(PublicacionDTO publicacionDTO) {
-		Publicacion publicacion = new Publicacion();
-
-		publicacion.setTitulo(publicacionDTO.getTitulo());
-		publicacion.setDescripcion(publicacionDTO.getDescripcion());
-		publicacion.setContenido(publicacionDTO.getContenido());
-
+		Publicacion publicacion = modelMapper.map(publicacionDTO, Publicacion.class);
 		return publicacion;
 	}
 

@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "publicaciones", uniqueConstraints = { @UniqueConstraint(columnNames = { "titulo" }) })
 public class Publicacion implements Serializable {
@@ -33,6 +35,7 @@ public class Publicacion implements Serializable {
 	@Column(name = "contenido", nullable = false)
 	private String contenido;
 	
+	@JsonBackReference //resuelve la recursión infinita en comunicación bidireccional
 	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Comentario> comentarios = new HashSet<>();
 
@@ -78,6 +81,14 @@ public class Publicacion implements Serializable {
 
 	public void setContenido(String contenido) {
 		this.contenido = contenido;
+	}
+
+	public Set<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(Set<Comentario> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 }
