@@ -1,5 +1,7 @@
 package com.co.andresoft.apirest.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +47,16 @@ public class PublicacionController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PublicacionDTO> guardarPublicacion(@RequestBody PublicacionDTO publicacionDTO) {
+	public ResponseEntity<PublicacionDTO> guardarPublicacion(
+			@Valid
+			@RequestBody PublicacionDTO publicacionDTO) {
 		return new ResponseEntity<>(publicacionService.crearPublicacion(publicacionDTO), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<PublicacionDTO> actualizarPublicacionById(@RequestBody PublicacionDTO publicacionDTO,
+	public ResponseEntity<PublicacionDTO> actualizarPublicacionById(
+			@Valid
+			@RequestBody PublicacionDTO publicacionDTO,
 			@PathVariable(name = "id") Long id) {
 		PublicacionDTO publicacionRespuesta = publicacionService.actualizarPublicacionById(publicacionDTO, id);
 		return new ResponseEntity<>(publicacionRespuesta, HttpStatus.OK);

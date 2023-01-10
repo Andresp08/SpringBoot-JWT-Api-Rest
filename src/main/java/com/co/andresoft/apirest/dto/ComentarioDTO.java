@@ -1,13 +1,27 @@
 package com.co.andresoft.apirest.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class ComentarioDTO {
 
 	private Long id;
 
+	@NotEmpty(message = "El nombre no debe ir en vacio")
+	@NotBlank(message = "El nombre no debe ir en blanco")
+	@Size(min = 2, message = "El nombre debe tener al menos 2 caracteres")
 	private String nombre;
 
+	@Email(message = "Por favor ingresa un email correcto")
+	@NotEmpty(message = "El email no debe ir vacio")
+	@NotBlank(message = "El email no debe ir en blanco")
 	private String email;
 
+	@NotEmpty(message = "El cuerpo del comentario no debe ir vacio")
+	@NotBlank(message = "El cuerpo del comentario no debe ir en blanco")
+	@Size(min = 6, message = "El cuerpo del comentario debe tener al menos 6 caracteres")
 	private String cuerpo;
 
 	public ComentarioDTO() {

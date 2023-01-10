@@ -2,6 +2,8 @@ package com.co.andresoft.apirest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,7 @@ public class ComentarioController {
 	@PostMapping("/publicaciones/{publicacionId}/comentarios")
 	public ResponseEntity<ComentarioDTO> guardarComentario(
 			@PathVariable(value = "publicacionId") Long publicacionId,
+			@Valid
 			@RequestBody ComentarioDTO comentarioDTO) {
 
 		return new ResponseEntity<>(comentarioService.crearComentario(publicacionId, comentarioDTO),
@@ -57,6 +60,7 @@ public class ComentarioController {
 	public ResponseEntity<ComentarioDTO> actualizarComentario(
 			@PathVariable(value = "publicacionId") Long publicacionId,
 			@PathVariable(value = "id") Long comentarioId,
+			@Valid 
 			@RequestBody ComentarioDTO nuevoComentario){
 		
 		ComentarioDTO comentarioActualizado = comentarioService
