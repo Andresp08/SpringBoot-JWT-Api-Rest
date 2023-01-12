@@ -11,10 +11,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.co.andresoft.apirest.security.CustomUserDetailsService;
+import com.co.andresoft.apirest.security.JwtAuthenticationEntryPoint;
+import com.co.andresoft.apirest.security.JwtAuthenticationFilter;
 
 
 @EnableWebSecurity
@@ -28,15 +32,29 @@ public class SecurityConfig {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
+	
 	@Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
+			.exceptionHandling()
+			.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
 			.authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").permitAll()
 			.antMatchers("/api/auth/**").permitAll()
 			.anyRequest()
-			.authenticated()
-			.and()
-			.httpBasic();
+			.authenticated();
+			
+		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         	
         return http.build();
     }

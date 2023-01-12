@@ -24,6 +24,8 @@ import com.co.andresoft.apirest.model.dao.IRolDao;
 import com.co.andresoft.apirest.model.dao.IUsuarioDao;
 import com.co.andresoft.apirest.model.entity.Rol;
 import com.co.andresoft.apirest.model.entity.Usuario;
+import com.co.andresoft.apirest.security.JwtAuthResponseDTO;
+import com.co.andresoft.apirest.security.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -41,14 +43,21 @@ public class AuthController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
 	@PostMapping("/login")
-	public ResponseEntity<String> authenticateUser(@RequestBody LoginDTO loginDTO){
+	public ResponseEntity<JwtAuthResponseDTO> authenticateUser(@RequestBody LoginDTO loginDTO){
+		
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsernameOrEmail(), loginDTO.getPassword()));
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
-		return new ResponseEntity<>("Ha iniciado sesión con exito", HttpStatus.OK);
+		//obtener el token del jwtTokenProvider
+		String token = jwtTokenProvider.generarTokenAcceso(authentication);
+		
+		return ResponseEntity.ok(new JwtAuthResponseDTO(token));
 	}
 	
 	@PostMapping("/registrar")
