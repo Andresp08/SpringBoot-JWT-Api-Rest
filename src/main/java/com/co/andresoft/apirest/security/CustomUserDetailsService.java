@@ -38,5 +38,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return roles.stream()
 				.map(rol -> new SimpleGrantedAuthority(rol.getNombre())).collect(Collectors.toList());
 	}
-
 }
