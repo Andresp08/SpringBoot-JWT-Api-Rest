@@ -49,7 +49,7 @@ public class JwtTokenProvider {
 		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 
 		if (claims.getExpiration().before(Date.from(Instant.now()))) {
-			throw new JwtException("Token está expitado");
+			throw new JwtException("Token está expirado");
 		}
 
 		return claims.getSubject(); // username del token
